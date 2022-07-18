@@ -1,0 +1,7 @@
+-I/home/suhasdissa/Documents/KDE/WattaMark/src
+-I/home/suhasdissa/Documents/KDE/WattaMark/build/src
+-D_GNU_SOURCE
+-D_LARGEFILE64_SOURCE
+-o
+/home/suhasdissa/Documents/KDE/WattaMark/build/src/wattamarkconfig.moc
+/home/suhasdissa/Documents/KDE/WattaMark/build/src/wattamarkconfig.h
