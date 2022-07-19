@@ -4,6 +4,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
+import QtQuick.Dialogs 1.0
 import org.kde.kirigami 2.19 as Kirigami
 import org.kde.WattaMark 1.0
 
@@ -33,21 +34,11 @@ Kirigami.ApplicationWindow {
         interval: 1000
         onTriggered: App.saveWindowGeometry(root)
     }
-
-    property int counter: 0
-
     globalDrawer: Kirigami.GlobalDrawer {
         title: i18n("WattaMark")
         titleIcon: "applications-graphics"
         isMenu: !root.isMobile
         actions: [
-            Kirigami.Action {
-                text: i18n("Plus One")
-                icon.name: "list-add"
-                onTriggered: {
-                    counter += 1
-                }
-            },
             Kirigami.Action {
                 text: i18n("About WattaMark")
                 icon.name: "help-about"
@@ -66,72 +57,46 @@ Kirigami.ApplicationWindow {
     }
 
     pageStack.initialPage: page
-
+ FileDialog {
+    id: fileDialog
+    selectMultiple: true
+    title: "Please choose a file"
+    folder: shortcuts.home
+    onAccepted: {
+        console.log("You chose: " + fileDialog.fileUrls)
+        fileDialog.close()
+    }
+    onRejected: {
+        console.log("Canceled")
+        fileDialog.close()
+    }
+    Component.onCompleted: visible = false
+}
     Kirigami.Page {
         id: page
 
         Layout.fillWidth: true
 
         title: i18n("Main Page")
-
         actions.main: Kirigami.Action {
-            text: i18n("Plus One")
+                text: i18n("Open File")
             icon.name: "list-add"
-            tooltip: i18n("Add one to the counter")
-            onTriggered: {
-                counter += 1
+            tooltip: i18n("Open Files")
+            onTriggered: fileDialog.open()
             }
-        }
 
         ColumnLayout {
             width: page.width
-
             anchors.centerIn: parent
 
             Kirigami.Heading {
                 Layout.alignment: Qt.AlignCenter
-                text: counter == 0 ? i18n("Hello, World!") : counter
-            }
-
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
+                text: i18n("Hello, World!")
             }
             Controls.Button {
                 Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "+ 1"
-                onClicked: counter += 1
+                text: "Open File"
+                onClicked: fileDialog.open()
             }
 
         }
