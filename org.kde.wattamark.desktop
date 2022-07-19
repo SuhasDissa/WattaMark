@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: CC0-1.0
-# SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
+# SPDX-FileCopyrightText: 2022 Suhas Dissanayake <suhasdissa@protonmail.com>
 [Desktop Entry]
 Name=WattaMark
 Comment=WattaMark Kirigami Application

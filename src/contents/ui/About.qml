@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
+// SPDX-FileCopyrightText: 2022 Suhas Dissanayake <suhasdissa@protonmail.com>
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls

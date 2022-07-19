@@ -1,6 +1,6 @@
 /*
     SPDX-License-Identifier: GPL-2.0-or-later
-    SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
+    SPDX-FileCopyrightText: 2022 Suhas Dissanayake <suhasdissa@protonmail.com>
 */
 
 #include <QApplication>
@@ -37,9 +37,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
                          KAboutLicense::GPL,
                          // Copyright Statement.
                          i18n("(c) 2022"));
-    aboutData.addAuthor(i18nc("@info:credit", "%{AUTHOR}"),
+    aboutData.addAuthor(i18nc("@info:credit", "Suhas Dissanayake"),
                         i18nc("@info:credit", "Author Role"),
-                        QStringLiteral("%{EMAIL}"),
+                        QStringLiteral("suhasdissa@protonmail.com"),
                         QStringLiteral("https://yourwebsite.com"));
     KAboutData::setApplicationData(aboutData);
 

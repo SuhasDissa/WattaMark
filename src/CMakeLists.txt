@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# SPDX-FileCopyrightText: %{CURRENT_YEAR} %{AUTHOR} <%{EMAIL}>
+# SPDX-FileCopyrightText: 2022 Suhas Dissanayake <suhasdissa@protonmail.com>
 
 add_executable(wattamark
     main.cpp
