@@ -25,10 +25,6 @@ Kirigami.ApplicationWindow {
 
     Component.onCompleted: App.restoreWindowGeometry(root)
 
-    // This timer allows to batch update the window size change to reduce
-    // the io load and also work around the fact that x/y/width/height are
-    // changed when loading the page and overwrite the saved geometry from
-    // the previous session.
     Timer {
         id: saveWindowGeometryTimer
         interval: 1000
@@ -57,17 +53,18 @@ Kirigami.ApplicationWindow {
     }
 
     pageStack.initialPage: page
- FileDialog {
+
+FileDialog {
     id: fileDialog
-    selectMultiple: true
+    selectMultiple: false //Disabled for testing pourposes
     title: "Please choose a file"
     folder: shortcuts.home
     onAccepted: {
-        console.log("You chose: " + fileDialog.fileUrls)
+        console.log("Loading... " + fileDialog.fileUrls)
+        image.source = fileDialog.fileUrls.toString()
         fileDialog.close()
     }
     onRejected: {
-        console.log("Canceled")
         fileDialog.close()
     }
     Component.onCompleted: visible = false
@@ -84,21 +81,39 @@ Kirigami.ApplicationWindow {
             tooltip: i18n("Open Files")
             onTriggered: fileDialog.open()
             }
+        header: Controls.TabBar {
+        id: tabBar
+        currentIndex: swipeView.currentIndex
 
-        ColumnLayout {
-            width: page.width
-            anchors.centerIn: parent
-
-            Kirigami.Heading {
-                Layout.alignment: Qt.AlignCenter
-                text: i18n("Hello, World!")
-            }
-            Controls.Button {
-                Layout.alignment: Qt.AlignHCenter
-                text: "Open File"
-                onClicked: fileDialog.open()
-            }
-
+        Controls.TabButton {
+            text: "Open Files"
         }
+        Controls.TabButton {
+            text: "Add Watermark"
+        }
+        Controls.TabButton {
+            text: "Export"
+        }
+    }
+Controls.SwipeView {
+        id: swipeView
+        anchors.fill: parent
+        currentIndex: tabBar.currentIndex
+        clip: true
+        Item{
+            id: firstTab
+        }
+Item{
+id: secondTab
+    Image {
+        id:image
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+}
+}
+Item{
+            id: thirdTab
+        }
+}
     }
 }
