@@ -6,5 +6,7 @@
     <qresource prefix="/">
         <file alias="main.qml">contents/ui/main.qml</file>
         <file alias="About.qml">contents/ui/About.qml</file>
+        <file alias="FileListDelegate.qml">contents/ui/FileListDelegate.qml</file>
+        <file alias="WatermarkSelection.qml">contents/ui/WatermarkSelection.qml</file>
     </qresource>
 </RCC>

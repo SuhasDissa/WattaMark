@@ -41,6 +41,7 @@ Kirigami.ApplicationWindow {
             }
         ]
     }
+
     contextDrawer : Kirigami.ContextDrawer {
         id : contextDrawer
     }
@@ -90,61 +91,39 @@ Kirigami.ApplicationWindow {
         currentIndex : tabBar.currentIndex
         clip : true
         Item {
-            id : firstTab
-            Component {
-                id : delegateComponent
-                Kirigami.SwipeListItem {
-                    id : listItem
-                    contentItem :RowLayout {
-                        Image{
-                            source:model.imageurl
-                            sourceSize: {width: 100; height: 100}
-                            Layout.preferredHeight: 100
-                            Layout.preferredWidth: 100
-                            asynchronous : true
-                            fillMode : Image.PreserveAspectFit
-                        }
-                        Controls.Label {
-                            Layout.fillWidth : true
-                            text:model.title
-                            color : listItem.checked || (listItem.pressed && !listItem.checked && !listItem.sectionDelegate)? listItem.activeTextColor: listItem.textColor
-                        }
-                    }
-                        actions : [Kirigami.Action {
-                            iconName : "list-remove"
-                            text : "Remove"
-                            onTriggered : listModel.remove(index)
-                        }
-                    ]
-                }
-            }
             ListView {
                 id : filesList
                 anchors.fill : parent
                 model : ListModel {
                     id : listModel
                 }
-                delegate:delegateComponent
+                delegate:FileListDelegate{}
             }
         }
         Item {
-            FileDialog {
-        id : watermarkDialog
-        selectMultiple : false
-        title : "Please choose a file"
-        folder : shortcuts.home
-        nameFilters: [ "Image files (*.jpg *.jpeg *.png)" ]
-        onAccepted : {
-            watermarkImg = watermarkDialog.fileUrl
-            watermarkDialog.close()
-        }
-        onRejected : {
-            watermarkDialog.close()
-        }
-        Component.onCompleted : visible = false
+            Component {
+    id: selectionComponent
+
+    WatermarkSelection{}
+}
+
+FileDialog {
+    id : watermarkDialog
+    selectMultiple : false
+    title : "Please choose a file"
+    folder : shortcuts.home
+    nameFilters: [ "Image files (*.jpg *.jpeg *.png)" ]
+    onAccepted : {
+        watermarkImg = watermarkDialog.fileUrl
+        watermarkDialog.close()
     }
-            id : secondTab
-            Image {
+    onRejected : {
+        watermarkDialog.close()
+    }
+    Component.onCompleted : visible = false
+}
+
+Image {
                 id: mainImage
                 anchors.fill: parent
                 fillMode : Image.PreserveAspectFit
@@ -158,133 +137,10 @@ Kirigami.ApplicationWindow {
                     }
                 }
             }
-            Component {
-        id: selectionComponent
-
-        Rectangle {
-            id: selComp
-            border {
-                width: 2
-                color: "#00a6ff"
-            }
-            color: "#00a6ffB4"
-
-            property int rulersSize: 18
-            Image{
-                source: watermarkImg
-                anchors.fill: parent
-                }
-            MouseArea {     // drag mouse area
-                anchors.fill: parent
-                drag{
-                    target: parent
-                    minimumX: 0
-                    minimumY: 0
-                    maximumX: parent.parent.width - parent.width
-                    maximumY: parent.parent.height - parent.height
-                    smoothed: true
-                }
-
-                onDoubleClicked: {
-                    parent.destroy()        // destroy component
-                }
-            }
-
-            Rectangle {
-                width: rulersSize
-                height: rulersSize
-                radius: rulersSize
-                color: "#00a6ff"
-                anchors.horizontalCenter: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-
-                MouseArea {
-                    anchors.fill: parent
-                    drag{ target: parent; axis: Drag.XAxis }
-                    onMouseXChanged: {
-                        if(drag.active){
-                            selComp.width = selComp.width - mouseX
-                            selComp.x = selComp.x + mouseX
-                            if(selComp.width < 30)
-                                selComp.width = 30
-                        }
-                    }
-                }
-            }
-
-            Rectangle {
-                width: rulersSize
-                height: rulersSize
-                radius: rulersSize
-                color: "#00a6ff"
-                anchors.horizontalCenter: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-
-                MouseArea {
-                    anchors.fill: parent
-                    drag{ target: parent; axis: Drag.XAxis }
-                    onMouseXChanged: {
-                        if(drag.active){
-                            selComp.width = selComp.width + mouseX
-                            if(selComp.width < 50)
-                                selComp.width = 50
-                        }
-                    }
-                }
-            }
-
-            Rectangle {
-                width: rulersSize
-                height: rulersSize
-                radius: rulersSize
-                x: parent.x / 2
-                y: 0
-                color: "#00a6ff"
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.top
-
-                MouseArea {
-                    anchors.fill: parent
-                    drag{ target: parent; axis: Drag.YAxis }
-                    onMouseYChanged: {
-                        if(drag.active){
-                            selComp.height = selComp.height - mouseY
-                            selComp.y = selComp.y + mouseY
-                            if(selComp.height < 50)
-                                selComp.height = 50
-                        }
-                    }
-                }
-            }
 
 
-                Rectangle {
-                    width: rulersSize
-                    height: rulersSize
-                    radius: rulersSize
-                    x: parent.x / 2
-                    y: parent.y
-                    color: "#00a6ff"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.bottom
-
-                    MouseArea {
-                        anchors.fill: parent
-                        drag{ target: parent; axis: Drag.YAxis }
-                        onMouseYChanged: {
-                            if(drag.active){
-                                selComp.height = selComp.height + mouseY
-                                if(selComp.height < 50)
-                                    selComp.height = 50
-                            }
-                        }
-                    }
-                }
-            }
-    }
         }
         Item {
-            id : thirdTab
         }
     }
 }}
