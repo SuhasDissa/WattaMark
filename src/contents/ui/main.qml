@@ -12,18 +12,10 @@ Kirigami.ApplicationWindow {
     minimumWidth : Kirigami.Units.gridUnit * 20
     minimumHeight : Kirigami.Units.gridUnit * 20
     onClosing : App.saveWindowGeometry(root)
-    onWidthChanged : saveWindowGeometryTimer.restart()
-    onHeightChanged : saveWindowGeometryTimer.restart()
-    onXChanged : saveWindowGeometryTimer.restart()
-    onYChanged : saveWindowGeometryTimer.restart()
     Component.onCompleted : App.restoreWindowGeometry(root)
     property var selection: undefined
     property var watermarkImg: undefined
-    Timer {
-        id : saveWindowGeometryTimer
-        interval : 1000
-        onTriggered : App.saveWindowGeometry(root)
-    }
+    property var previewImg: undefined
     globalDrawer : Kirigami.GlobalDrawer {
         title : i18n("WattaMark")
         titleIcon : "applications-graphics"
@@ -53,7 +45,6 @@ Kirigami.ApplicationWindow {
         nameFilters: [ "Image files (*.jpg *.jpeg *.png)" ]
         onAccepted : {
             fileDialog.fileUrls.forEach(file => {listModel.append({"title": file,"imageurl":file,                          "actions": [{text: "Remove",icon: "list-remove"}]})})
-            mainImage.source = fileDialog.fileUrls[0]
             fileDialog.close()
         }
         onRejected : {
@@ -65,13 +56,7 @@ Kirigami.ApplicationWindow {
     Kirigami.Page {
         id : page
         Layout.fillWidth : true
-        title : i18n("Main Page")
-        actions.main : Kirigami.Action {
-            text : i18n("Open File")
-            icon.name : "list-add"
-            tooltip : i18n("Open Files")
-            onTriggered : fileDialog.open()
-        }
+        title : i18n("WattaMark")
         header : Controls.TabBar {
             id : tabBar
             currentIndex : swipeView.currentIndex
@@ -84,21 +69,58 @@ Kirigami.ApplicationWindow {
             Controls.TabButton {
                 text : "Export"
             }
+        background: Rectangle {
+        color: Kirigami.Theme.backgroundColor
+    }
     }
     Controls.SwipeView {
         id : swipeView
-        anchors.fill : parent
+        anchors.fill: parent
         currentIndex : tabBar.currentIndex
         clip : true
         Item {
-            ListView {
+            RowLayout{
+                anchors.fill: parent
+                spacing: 6
+                ColumnLayout{
+        Layout.fillWidth: true
+        Layout.preferredHeight: parent.height
+        Layout.minimumWidth: 400
+        Controls.ScrollView{
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
+            Controls.ScrollBar.vertical.interactive: true
+        ListView {
                 id : filesList
                 anchors.fill : parent
                 model : ListModel {
                     id : listModel
                 }
                 delegate:FileListDelegate{}
+            }}
+
+    Controls.Button {
+            text : i18n("Open File")
+            icon.name : "list-add"
+            onClicked : fileDialog.open()
+    }
+
+
+    }
+    ColumnLayout {
+        Layout.fillWidth: true
+        Layout.minimumWidth: 400
+        Image{
+            id:previewImage
+            source:previewImg
+            fillMode : Image.PreserveAspectFit
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+    }
             }
+
         }
         Item {
             Component {
@@ -127,6 +149,7 @@ Image {
                 id: mainImage
                 anchors.fill: parent
                 fillMode : Image.PreserveAspectFit
+                source:previewImg
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
