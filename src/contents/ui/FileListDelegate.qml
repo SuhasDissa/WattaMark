@@ -16,7 +16,7 @@ Kirigami.SwipeListItem {
 	anchors.fill: parent
 	onClicked: {
 		filesList.currentIndex = index;
-		previewImg = title
+		previewImg = imageurl
 	}
 }
                     }

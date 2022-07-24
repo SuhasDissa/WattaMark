@@ -44,7 +44,8 @@ Kirigami.ApplicationWindow {
         folder : shortcuts.home
         nameFilters: [ "Image files (*.jpg *.jpeg *.png)" ]
         onAccepted : {
-            fileDialog.fileUrls.forEach(file => {listModel.append({"title": file,"imageurl":file,                          "actions": [{text: "Remove",icon: "list-remove"}]})})
+            fileDialog.fileUrls.forEach(file => {
+                listModel.append({"title": file.split('/').pop(),"imageurl":file,                          "actions": [{text: "Remove",icon: "list-remove"}]})})
             fileDialog.close()
         }
         onRejected : {
@@ -89,11 +90,13 @@ Kirigami.ApplicationWindow {
         Controls.ScrollView{
             Layout.fillWidth: true
             Layout.fillHeight: true
+            contentWidth: filesList.width
+            contentHeight: filesList.height
             Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
             Controls.ScrollBar.vertical.interactive: true
         ListView {
                 id : filesList
-                anchors.fill : parent
+                width: parent.width
                 model : ListModel {
                     id : listModel
                 }
@@ -155,7 +158,7 @@ Image {
                     onClicked: {
                         if(!selection)
                             watermarkDialog.open()
-                            selection = selectionComponent.createObject(parent, {"x": parent.width / 4, "y": parent.height / 4, "width": parent.width / 2, "height": parent.width / 2})
+                            selection = selectionComponent.createObject(parent, {"x": parent.width / 2, "y": parent.height / 2, "width": 128, "height": 128})
 
                     }
                 }
