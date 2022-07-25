@@ -5,6 +5,7 @@ add_executable(wattamark
     main.cpp
     about.cpp
     app.cpp
+    backend.cpp
     resources.qrc)
 
 target_link_libraries(wattamark

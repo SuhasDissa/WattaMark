@@ -37,22 +37,6 @@ Kirigami.ApplicationWindow {
     contextDrawer : Kirigami.ContextDrawer {
         id : contextDrawer
     }
-    FileDialog {
-        id : fileDialog
-        selectMultiple : true
-        title : "Please choose a file"
-        folder : shortcuts.home
-        nameFilters: [ "Image files (*.jpg *.jpeg *.png)" ]
-        onAccepted : {
-            fileDialog.fileUrls.forEach(file => {
-                listModel.append({"title": file.split('/').pop(),"imageurl":file,                          "actions": [{text: "Remove",icon: "list-remove"}]})})
-            fileDialog.close()
-        }
-        onRejected : {
-            fileDialog.close()
-        }
-        Component.onCompleted : visible = false
-    }
     pageStack.initialPage : page
     Kirigami.Page {
         id : page
@@ -80,6 +64,23 @@ Kirigami.ApplicationWindow {
         currentIndex : tabBar.currentIndex
         clip : true
         Item {
+       FileDialog {
+        id : fileDialog
+        selectMultiple : true
+        title : "Please choose a file"
+        folder : shortcuts.home
+        nameFilters: [ "Image files (*.jpg *.jpeg *.png)" ]
+        onAccepted : {
+            fileDialog.fileUrls.forEach(file => {
+                listModel.append({"title": file.split('/').pop(),"imageurl":file,                          "actions": [{text: "Remove",icon: "list-remove"}]})})
+            previewImg = fileDialog.fileUrls[0]
+            fileDialog.close()
+        }
+        onRejected : {
+            fileDialog.close()
+        }
+        Component.onCompleted : visible = false
+    }
             RowLayout{
                 anchors.fill: parent
                 spacing: 6
@@ -150,7 +151,7 @@ FileDialog {
 
 Image {
                 id: mainImage
-                anchors.fill: parent
+                height:parent.height
                 fillMode : Image.PreserveAspectFit
                 source:previewImg
                 MouseArea {
@@ -167,7 +168,23 @@ Image {
 
         }
         Item {
+            Controls.Button{
+                text : i18n("Apply Watermark")
+                icon.name : "list-add"
+                onClicked : {
+                var imgWidth = parseInt(mainImage.width)
+                var imgHeight = parseInt(mainImage.height)
+                var wmWidth = parseInt(selection.width)
+                var wmHeight = parseInt(selection.height)
+                var wmX = parseInt(selection.x)
+                var wmY = parseInt(selection.y)
+                var wmPath = watermarkImg.toString()
+                Backend.applyWatermark(imgWidth,imgHeight,wmX,wmY,wmWidth,wmHeight,wmPath)
+            }
+            }
         }
     }
-}}
+}
+
+    }
 

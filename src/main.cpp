@@ -10,6 +10,7 @@
 
 #include "about.h"
 #include "app.h"
+#include "backend.h"
 #include "version-wattamark.h"
 #include <KAboutData>
 #include <KLocalizedContext>
@@ -44,6 +45,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     KAboutData::setApplicationData(aboutData);
 
     QQmlApplicationEngine engine;
+
+    Backend backend;
+    qmlRegisterSingletonInstance<Backend>("org.kde.WattaMark", 1, 0, "Backend", &backend);
 
     auto config = WattaMarkConfig::self();
 
