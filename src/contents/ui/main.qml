@@ -157,10 +157,10 @@ Image {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if(!selection)
+                        if(!selection){
                             watermarkDialog.open()
                             selection = selectionComponent.createObject(parent, {"x": parent.width / 2, "y": parent.height / 2, "width": 128, "height": 128})
-
+                        }
                     }
                 }
             }
