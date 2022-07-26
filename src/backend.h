@@ -8,6 +8,6 @@ class Backend : public QObject
 
 public:
     explicit Backend(QObject *parent = nullptr);
-    Q_INVOKABLE void applyWatermark(int imgWidth,int imgHeight,int watermarkX,int watermarkY, int watermarkWidth,int watermarkHeight,QString watermarkPath) const;
+    Q_INVOKABLE void applyWatermark(int watermarkX,int watermarkY, QString watermarkG,QString watermarkPath,QString imagePath,QString filename) const;
 };
 

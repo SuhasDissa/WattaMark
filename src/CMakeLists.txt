@@ -18,7 +18,8 @@ target_link_libraries(wattamark
     KF5::I18n
     KF5::CoreAddons
     KF5::ConfigCore
-    KF5::ConfigGui)
+    KF5::ConfigGui
+    ${ImageMagick_LIBRARIES})
 
 if (ANDROID)
     kirigami_package_breeze_icons(ICONS

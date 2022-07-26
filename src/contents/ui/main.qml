@@ -172,14 +172,16 @@ Image {
                 text : i18n("Apply Watermark")
                 icon.name : "list-add"
                 onClicked : {
-                var imgWidth = parseInt(mainImage.width)
-                var imgHeight = parseInt(mainImage.height)
-                var wmWidth = parseInt(selection.width)
-                var wmHeight = parseInt(selection.height)
-                var wmX = parseInt(selection.x)
-                var wmY = parseInt(selection.y)
+                var imgRatio = parseInt(mainImage.sourceSize.width)/parseInt(mainImage.width)
+                var wmWidth = parseInt(parseInt(selection.width)*imgRatio)
+                var wmHeight = parseInt(parseInt(selection.height)*imgRatio)
+                var wmGeometry = wmWidth+"x"+wmHeight+"!"
+                var wmX = parseInt(parseInt(selection.x)*imgRatio)
+                var wmY = parseInt(parseInt(selection.y)*imgRatio)
                 var wmPath = watermarkImg.toString()
-                Backend.applyWatermark(imgWidth,imgHeight,wmX,wmY,wmWidth,wmHeight,wmPath)
+                var imgPath = previewImg.toString()
+                var imgFileName = imgPath.split('/').pop()
+                Backend.applyWatermark(wmX,wmY,wmGeometry,wmPath,imgPath,imgFileName)
             }
             }
         }
