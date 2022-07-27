@@ -7,7 +7,7 @@ Backend::Backend(QObject *parent)
     : QObject(parent)
 {}
 
-void Backend::applyWatermark(int watermarkX,int watermarkY, QString watermarkG,QString watermarkPath,QString imagePath,QString filename) const
+void Backend::applyWatermark(int watermarkX,int watermarkY, QString watermarkG,QString watermarkPath,QString imagePath,QString filename)
 {
 
     InitializeMagick("");

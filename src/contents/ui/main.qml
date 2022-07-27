@@ -74,6 +74,7 @@ Kirigami.ApplicationWindow {
             fileDialog.fileUrls.forEach(file => {
                 listModel.append({"title": file.split('/').pop(),"imageurl":file,                          "actions": [{text: "Remove",icon: "list-remove"}]})})
             previewImg = fileDialog.fileUrls[0]
+            pBar.to = listModel.count
             fileDialog.close()
         }
         onRejected : {
@@ -89,6 +90,10 @@ Kirigami.ApplicationWindow {
         Layout.preferredHeight: parent.height
         Layout.minimumWidth: 400
         Controls.ScrollView{
+            background: Rectangle{
+                radius:10
+                color:"white"
+            }
             Layout.fillWidth: true
             Layout.fillHeight: true
             contentWidth: filesList.width
@@ -152,6 +157,7 @@ FileDialog {
 Image {
                 id: mainImage
                 height:parent.height
+                anchors.horizontalCenter: parent.horizontalCenter
                 fillMode : Image.PreserveAspectFit
                 source:previewImg
                 MouseArea {
@@ -168,10 +174,21 @@ Image {
 
         }
         Item {
+            Controls.ProgressBar{
+            id: pBar
+            height: 20
+            width: parent.width
+            anchors.bottom: parent.bottom
+            from:0
+            value : 0
+        }
+
             Controls.Button{
                 text : i18n("Apply Watermark")
                 icon.name : "list-add"
                 onClicked : {
+for(var i = 0; i < listModel.count; ++i){
+                var imgPath = listModel.get(i).imageurl.toString()
                 var imgRatio = parseInt(mainImage.sourceSize.width)/parseInt(mainImage.width)
                 var wmWidth = parseInt(parseInt(selection.width)*imgRatio)
                 var wmHeight = parseInt(parseInt(selection.height)*imgRatio)
@@ -179,10 +196,10 @@ Image {
                 var wmX = parseInt(parseInt(selection.x)*imgRatio)
                 var wmY = parseInt(parseInt(selection.y)*imgRatio)
                 var wmPath = watermarkImg.toString()
-                var imgPath = previewImg.toString()
                 var imgFileName = imgPath.split('/').pop()
                 Backend.applyWatermark(wmX,wmY,wmGeometry,wmPath,imgPath,imgFileName)
-            }
+                pBar.value = i + 1
+            }}
             }
         }
     }
