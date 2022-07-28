@@ -203,7 +203,6 @@ Kirigami.ApplicationWindow {
                     width: parent.width
                     anchors.bottom: parent.bottom
                 }
-
                 Controls.Button{
                     text: i18n("Apply Watermark")
                     icon.name: "list-add"
@@ -220,6 +219,7 @@ Kirigami.ApplicationWindow {
                         var imgFileName = imgPath.split('/').pop()
                         Backend.applyWatermark(wmX, wmY, wmGeometry, wmPath, imgPath, imgFileName)
                         pBar.value = (i + 1)/listModel.count
+                        console.log("Progress: "+ parseInt((i + 1)/listModel.count*100)+"%")
                     }}
                 }
             }
